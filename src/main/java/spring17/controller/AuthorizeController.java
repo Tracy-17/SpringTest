@@ -11,7 +11,9 @@ import spring17.mapper.UserMapper;
 import spring17.model.User;
 import spring17.provider.GithubProvider;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
 /**
@@ -39,7 +41,8 @@ public class AuthorizeController {
     public String callback(@RequestParam(name="code")String code,
                            @RequestParam(name="state")String state,
                            //写了HttpServletRequest后，spring会自动将request放入上下文以供使用
-                           HttpServletRequest request){
+                           HttpServletRequest request,
+                           HttpServletResponse response){
         AccessTokenDTO at = new AccessTokenDTO();
         at.setClientId(clientId);
         at.setClientSecret(clientSecret);
@@ -49,23 +52,24 @@ public class AuthorizeController {
         String accessToken = gp.getAccessToken(at);
         GithubUser githubUser = gp.getUser(accessToken);
         if(githubUser!=null){
-            //登录成功
+            //登录成功，获取用户信息
             User user = new User();
-            //javaJDK提供的一个自动生成主键的方法:
-            user.setToken(UUID.randomUUID().toString());
+            String token = UUID.randomUUID().toString();//javaJDK提供的一个自动生成主键的方法:
+            //存入数据库
+            user.setToken(token);
             user.setName(githubUser.getName());
             user.setAccountId(String.valueOf(githubUser.getId()));
             user.setGmtCreate(System.currentTimeMillis());
             user.setGmtModified(user.getGmtCreate());
-            
-            userMapper.insert(user);
             // 写cookie和session
-            request.getSession().setAttribute("user",user);
+            userMapper.insert(user);//作为session
+//            request.getSession().setAttribute("user",user);
+            response.addCookie(new Cookie("token", token));
             //有redirect前缀，会把地址栏刷新重定向到index
-            return "redirect:/";
+            return "redirect:/index";
         }else{
             //登录失败，重新登录
-            return "redirect:index";
+            return "redirect:/index";
         }
     }
 }
