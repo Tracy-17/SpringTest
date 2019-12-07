@@ -26,11 +26,9 @@ public class GithubProvider {
                         +atd.getClientId()+"&client_secret="+atd.getClientSecret()+"&code="
                         +atd.getCode()+"&redirect_uri="+atd.getRedirectUri()+"&state="+atd.getState())
                 .post(body)
-       //         .addHeader("Accept","application/json")
                 .build();
         try (Response response = client.newCall(request).execute()) {
             String string = response.body().string();
-            System.out.println(string);
 //access_token=25a9159657c86bbaa18a89db3c957a037238dc17&scope=user&token_type=bearer
             String token=string.split("&")[0].split("=")[1];
             return token;
