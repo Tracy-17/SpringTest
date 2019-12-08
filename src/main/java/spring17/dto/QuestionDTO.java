@@ -1,13 +1,15 @@
-package spring17.model;
+package spring17.dto;
 
 import lombok.Data;
+import spring17.model.User;
 
 /**
  * Author:ShiQi
- * Date:2019/12/8-0:55
+ * Date:2019/12/8-18:14
+ * 展示给前端专用
  */
 @Data
-public class Question {
+public class QuestionDTO {
     private Integer id;
     private String title;
     private String description;
@@ -18,5 +20,6 @@ public class Question {
     private Integer viewCount;
     private Integer commentCount;
     private Integer likeCount;
-
+    //需要展示给前端用户信息，但不存储进数据库
+    private User user;
 }

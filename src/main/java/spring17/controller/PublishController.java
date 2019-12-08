@@ -28,16 +28,34 @@ public class PublishController {
     private UserMapper userMapper;
 
     @GetMapping("/publish")//get方法：渲染页面
-    public String publish(){
+    public String publish() {
         return "publish";
     }
+
     @PostMapping("/publish")
     public String doPublish(
             @RequestParam("title") String title,
             @RequestParam("description") String description,
             @RequestParam("tag") String tag,
             HttpServletRequest request,
-            Model model){
+            //model可以把数据推送到前端页面
+            Model model) {
+        model.addAttribute("title", title);
+        model.addAttribute("description", description);
+        model.addAttribute("tag", tag);
+        //逻辑校验（建议写在前端）
+        if (title == null || title == "") {
+            model.addAttribute("error", "标题不能为空！");
+            return "publish";
+        }
+        if (description == null || description == "") {
+            model.addAttribute("error", "问题描述不能为空！");
+            return "publish";
+        }
+        if (tag == null || tag == "") {
+            model.addAttribute("error", "标签不能为空！");
+            return "publish";
+        }
         //获取当前页面用户信息
         User user = null;
         Cookie[] cookies = request.getCookies();
@@ -52,8 +70,8 @@ public class PublishController {
                 break;//命中结束循环
             }
         }
-        if(user==null){
-            model.addAttribute("error","用户未登录");
+        if (user == null) {
+            model.addAttribute("error", "用户未登录");
             return "/publish";
         }
         //评论数据进库
@@ -62,7 +80,8 @@ public class PublishController {
         question.setDescription(description);
         question.setTag(tag);
 
-        question.setCreator(user.getId());
+        question.setCreator(user.getId());//拿到的是登录的id（待改善）
+//        question.setCreator(user.getAccountId());
         question.setGmtCreate(System.currentTimeMillis());
         question.setGmtModified(question.getGmtCreate());
         questionMapper.create(question);

@@ -1,5 +1,6 @@
 create datebase spring_test;
-
+/*用户*/
+drop table if exists user;
 create table user
 (
 	ID int auto_increment
@@ -11,6 +12,8 @@ create table user
 	GMT_MODIFIED bigint null,
 	bio varchar(256) null
 );
+/*发帖*/
+drop table if exists question;
 create table question
 (
 	id int auto_increment
@@ -25,5 +28,7 @@ create table question
 	like_count int default 0 null,
 	tag varchar(256) null
 );
+/*外键约束：question creator对应user id*/
+alter table question add constraint fk_reference_2 foreign key(creator) references user(id) on delete restrict on update restrict;
 
 
