@@ -28,7 +28,7 @@
             </form>
             <ul class="nav navbar-nav navbar-right">
                 <li th:if="${session.user!=null}">
-                    <a href="/publish">发布</a>
+                    <a href="/publish">提问</a>
                 </li>
                 <!--                session调试：-->
                 <!--                <div th:text="${session.user}"></div>-->
@@ -44,7 +44,7 @@
                         <li><a href="/profile/questions">我的问题</a></li>
                         <li><a href="#">ＰＹ交易</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="#">退出登录</a></li>
+                        <li><a href="/logout">退出登录</a></li>
                     </ul>
                 </li>
                 <!--                https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/-->

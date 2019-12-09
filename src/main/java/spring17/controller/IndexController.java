@@ -6,16 +6,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import spring17.dto.PaginationDTO;
-import spring17.dto.QuestionDTO;
-import spring17.mapper.QuestionMapper;
-import spring17.mapper.UserMapper;
-import spring17.model.Question;
-import spring17.model.User;
 import spring17.service.QuestionService;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 /**
  * Author:ShiQi
@@ -24,8 +17,6 @@ import java.util.List;
  */
 @Controller
 public class IndexController {
-    @Autowired
-    private UserMapper userMapper;
     @Autowired
     private QuestionService questionService;
 
@@ -37,18 +28,7 @@ public class IndexController {
                         @RequestParam(name="size",defaultValue = "5")Integer size) {
         //去模板寻找hello：
 //        model.addAttribute("name",name);
-        Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
-            if ((cookie.getName()).equals("token")) {
-                String token = cookie.getValue();
-                User user = userMapper.findByToken(token);
-                if(user!=null){
-                    //写入session
-                    request.getSession().setAttribute("user",user);
-                }
-                break;//命中结束循环
-            }
-        }
+
 
         //获取question数据
         PaginationDTO pagination=questionService.List(page,size);

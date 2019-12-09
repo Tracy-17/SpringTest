@@ -11,6 +11,7 @@ import lombok.Data;
 public class User {
     private Integer id;
     private String name;
+    //主键：
     private String accountId;
     private String token;
     private Long gmtCreate;

@@ -7,11 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import spring17.mapper.QuestionMapper;
-import spring17.mapper.UserMapper;
 import spring17.model.Question;
 import spring17.model.User;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -24,8 +22,6 @@ public class PublishController {
 
     @Autowired
     private QuestionMapper questionMapper;
-    @Autowired
-    private UserMapper userMapper;
 
     @GetMapping("/publish")//get方法：渲染页面
     public String publish() {
@@ -57,19 +53,9 @@ public class PublishController {
             return "publish";
         }
         //获取当前页面用户信息
-        User user = null;
-        Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
-            if ((cookie.getName()).equals("token")) {
-                String token = cookie.getValue();
-                user = userMapper.findByToken(token);
-                if (user != null) {
-                    //写入session
-                    request.getSession().setAttribute("user", user);
-                }
-                break;//命中结束循环
-            }
-        }
+        //验证登录：
+        User user = (User)request.getSession().getAttribute("user");
+        //未登录跳转：
         if (user == null) {
             model.addAttribute("error", "用户未登录");
             return "/publish";
@@ -80,8 +66,8 @@ public class PublishController {
         question.setDescription(description);
         question.setTag(tag);
 
-        question.setCreator(user.getId());//拿到的是登录的id（待改善）
-//        question.setCreator(user.getAccountId());
+//        question.setCreator(user.getId());//拿到的是登录的id（待改善）
+        question.setCreator(user.getAccountId());
         question.setGmtCreate(System.currentTimeMillis());
         question.setGmtModified(question.getGmtCreate());
         questionMapper.create(question);

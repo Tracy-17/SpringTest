@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Service;
 import spring17.model.User;
 
 /**
@@ -19,6 +20,13 @@ public interface UserMapper {
     @Select("select * from user where token=#{token}")
     User findByToken(@Param("token") String token);
 
-    @Select("select * from user where id=#{id}")
-    User findByID(@Param("id") Integer id);
+    @Select("select * from user where account_id=#{accountId}")
+    User findByAccountID(@Param("accountId") String accountId);
+
+    @Select("select count(1) from user")
+    Integer count();
+
+    @Select("update user set name=#{name},token=#{token},gmt_modified=#{gmtModified},avatar_url=#{avatarUrl}" +
+            "where id=#{id}")
+    void update(User user);
 }
