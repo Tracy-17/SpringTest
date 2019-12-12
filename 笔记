@@ -11,3 +11,5 @@ https://mybatis.org/spring-boot-starter/mybatis-spring-boot-autoconfigure/
 https://mybatis.org/mybatis-3/configuration.html#settings
 拦截器：
 https://docs.spring.io/spring/docs/5.0.3.RELEASE/spring-framework-reference/web.html#mvc
+mybatis-generator:可以不用写很多sql语句。命令：mvn mybatis-generator:generate(mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate)
+https://www.cnblogs.com/deng-cc/p/9340748.html

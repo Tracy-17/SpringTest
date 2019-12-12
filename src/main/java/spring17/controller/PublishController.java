@@ -4,11 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import spring17.dto.QuestionDTO;
 import spring17.mapper.QuestionMapper;
 import spring17.model.Question;
 import spring17.model.User;
+import spring17.service.QuestionService;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,7 +24,18 @@ import javax.servlet.http.HttpServletRequest;
 public class PublishController {
 
     @Autowired
-    private QuestionMapper questionMapper;
+    private QuestionService questionService;
+
+    @GetMapping("/publish/{id}")
+    public String edit(@PathVariable(name="id")Integer id,
+                       Model model){
+        QuestionDTO question = questionService.getById(id);
+        model.addAttribute("title", question.getTitle());
+        model.addAttribute("description", question.getDescription());
+        model.addAttribute("tag", question.getTag());
+        model.addAttribute("id",question.getId());
+        return "publish";
+    }
 
     @GetMapping("/publish")//get方法：渲染页面
     public String publish() {
@@ -30,9 +44,10 @@ public class PublishController {
 
     @PostMapping("/publish")
     public String doPublish(
-            @RequestParam("title") String title,
-            @RequestParam("description") String description,
-            @RequestParam("tag") String tag,
+            @RequestParam(value ="title",required = false) String title,
+            @RequestParam(value ="description",required = false) String description,
+            @RequestParam(value ="tag",required = false) String tag,
+            @RequestParam(value = "id",required = false)Integer id,
             HttpServletRequest request,
             //model可以把数据推送到前端页面
             Model model) {
@@ -65,12 +80,13 @@ public class PublishController {
         question.setTitle(title);
         question.setDescription(description);
         question.setTag(tag);
+        question.setId(id);
 
 //        question.setCreator(user.getId());//拿到的是登录的id（待改善）
         question.setCreator(user.getAccountId());
-        question.setGmtCreate(System.currentTimeMillis());
-        question.setGmtModified(question.getGmtCreate());
-        questionMapper.create(question);
+
+        //存在风险：非法修改
+        questionService.createOrUpdate(question);
         return "redirect:/index";
     }
 }
