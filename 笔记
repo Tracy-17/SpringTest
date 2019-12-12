@@ -14,7 +14,11 @@ https://docs.spring.io/spring/docs/5.0.3.RELEASE/spring-framework-reference/web.
 mybatis-generator:可以不用写很多sql语句。命令：mvn mybatis-generator:generate(mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate)
 https://www.cnblogs.com/deng-cc/p/9340748.html
 
-这里出了很多错，把UserMapper.xml里
+问题总结&更新日志：
+12.12
+mybatis-generator这里出了很多错，把UserMapper.xml里
 <select id="selectByExampleWithBLOBsWithRowbounds" parameterType="spring17.model.UserExample" resultMap="ResultMapWithBLOBs">
 删了两行，算是解决了吧。。。
-★待修改：利用id修改别人的问题的风险
+★待修改：利用id修改别人的问题的风险&首页拿不到问题描述
+12.13
+whiteLable的解决，添加通用的处理业务异常逻辑（注意继承RuntimeException，不影响其他代码）
