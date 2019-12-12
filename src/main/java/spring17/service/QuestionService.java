@@ -16,6 +16,7 @@ import java.util.List;
 /**
  * Author:ShiQi
  * Date:2019/12/8-18:19
+ * mybits-generator:将findByAccountID替换成selectByPrimaryKey
  */
 @Service
 public class QuestionService {
@@ -44,7 +45,7 @@ public class QuestionService {
         List<Question> questions = questionMapper.List(offset, size);
         List<QuestionDTO> questionDTOS = new ArrayList<>();
         for (Question question : questions) {
-            User user = userMapper.findByAccountID(question.getCreator());
+            User user = userMapper.selectByPrimaryKey(question.getCreator());
             QuestionDTO questionDTO = new QuestionDTO();
             //BeanUtils.copyProperties:对象之间属性的赋值
             BeanUtils.copyProperties(question, questionDTO);
@@ -77,7 +78,7 @@ public class QuestionService {
         List<Question> questions = questionMapper.listByUserAccountId(userAccountId,offset, size);
         List<QuestionDTO> questionDTOS = new ArrayList<>();
         for (Question question : questions) {
-            User user = userMapper.findByAccountID(question.getCreator());
+            User user = userMapper.selectByPrimaryKey(question.getCreator());
             QuestionDTO questionDTO = new QuestionDTO();
             //BeanUtils.copyProperties:对象之间属性的赋值
             BeanUtils.copyProperties(question, questionDTO);
@@ -94,7 +95,7 @@ public class QuestionService {
         QuestionDTO questionDTO=new QuestionDTO();
         BeanUtils.copyProperties(question,questionDTO);
         //获取user对象
-        User user=userMapper.findByAccountID(question.getCreator());
+        User user=userMapper.selectByPrimaryKey(question.getCreator());
         questionDTO.setUser(user);
         return questionDTO;
     }

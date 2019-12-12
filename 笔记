@@ -13,3 +13,8 @@ https://mybatis.org/mybatis-3/configuration.html#settings
 https://docs.spring.io/spring/docs/5.0.3.RELEASE/spring-framework-reference/web.html#mvc
 mybatis-generator:可以不用写很多sql语句。命令：mvn mybatis-generator:generate(mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate)
 https://www.cnblogs.com/deng-cc/p/9340748.html
+
+这里出了很多错，把UserMapper.xml里
+<select id="selectByExampleWithBLOBsWithRowbounds" parameterType="spring17.model.UserExample" resultMap="ResultMapWithBLOBs">
+删了两行，算是解决了吧。。。
+★待修改：利用id修改别人的问题的风险

@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class GithubUser {
     private String name;
-    private long id;
+    private String id;
     private String bio;
     //获取用户头像：
     private String avatar_url;
