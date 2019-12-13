@@ -36,6 +36,34 @@
                     编辑
                 </a>
             </div>
+<!--            显示回复-->
+            <h4>
+                <span th:text="${question.commentCount}" style="margin-left: 15px"></span>个回复
+            </h4>
+            <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12 comment-sp">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 comments" th:each="comment : ${comments}">
+                <div class="media">
+                    <div class="media-left">
+                        <a href="#">
+                            <img class="media-object img-rounded"
+                                 th:if="${comment.user.avatarUrl!=null}"
+                                 th:src="@{${comment.user.avatarUrl}}">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h6 class="media-heading">
+                            <span th:text="${comment.user.name}"></span>
+                        </h6>
+<!--                回复内容：-->
+                        <div th:text="${comment.content}"></div>
+                        <div class="menu">
+                            <span class="glyphicon glyphicon-thumbs-up menu-icon"></span>
+                            <span class="glyphicon glyphicon-comment menu-icon"></span>
+                            <span th:text="${#dates.format(comment.gmtCreate,'yyyy-MM-dd')}" class="pull-right"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 <!--            点击回复后，为防止短时间内多次回复，暂时不显示评论框-->
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="comment_section">
