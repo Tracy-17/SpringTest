@@ -15,4 +15,5 @@ import java.util.List;
 @Mapper
 public interface QuestionExtMapper {
     int incView(Question record);
+    int incComment(Question record);
 }

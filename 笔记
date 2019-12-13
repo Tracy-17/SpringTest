@@ -1,27 +1,40 @@
-spring文档：
+【spring文档】
 https://docs.spring.io/spring-boot/docs/2.0.0.RC1/reference/htmlsingle/#boot-features-configure-datasource
-lombok:
+【lombok】
 https://projectlombok.org/features/all
-前端bootstrap：
+【前端bootstrap】
 https://v3.bootcss.com/
-前端样式文档：
+【前端样式文档】
 https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html#setting-attribute-values
-mybatis文档：
+【mybatis文档】
 https://mybatis.org/spring-boot-starter/mybatis-spring-boot-autoconfigure/
 https://mybatis.org/mybatis-3/configuration.html#settings
-拦截器：
+【拦截器】
 https://docs.spring.io/spring/docs/5.0.3.RELEASE/spring-framework-reference/web.html#mvc
-mybatis-generator:可以不用写很多sql语句。命令：mvn mybatis-generator:generate(mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate)
+【mybatis-generator】
+可以不用写很多sql语句。命令：mvn mybatis-generator:generate(mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate)
 https://www.cnblogs.com/deng-cc/p/9340748.html
-
+【postman】方便接口验证，用于异常调试（未测试）
 问题总结&更新日志：
 12.12
 mybatis-generator这里出了很多错，（分页插件的问题）。把UserMapper.xml里
 <select id="selectByExampleWithBLOBsWithRowbounds" parameterType="spring17.model.UserExample" resultMap="ResultMapWithBLOBs">
 ♥删了两行，算是解决了吧。。。
 ★待修改：利用id修改别人的问题的风险&首页拿不到问题描述
+
 12.13
 whiteLable的解决，添加通用的处理业务异常逻辑（注意继承RuntimeException，不影响其他代码）
 实现阅读数功能
 ♥修改记录：数据库修改（not null default 0）后，不想自动更新xml文件，手动更新：删除insert时阅读、评论、点赞的字段更新。
+√已验证：mybatis-generator的方式生成的xml文件会忽略掉数据库的default定义
+（简单点，在插入的时候手动赋值，不需要每次更新数据库后手动删除）
 多线程优化，自定义incView方法并添加Ext版xml、mapper文件（以防止重新生成时被覆盖）
+实现添加一级、二级评论功能的后端逻辑并完善comment数据库
+实现多种情况下的异常处理
+ 事 务 @Transactional：插入评论时，评论入库&问题的评论数+1两操作一起成功、一起失败
+（网络延迟导致，真正的项目中应该为辅助事务（评论数+1）添加补偿机制）
+
+12.14
+用jquery获取hidden的值，实现异步更新；
+完成评论框的前端，以及提交时的错误显示
+localStorage-实现

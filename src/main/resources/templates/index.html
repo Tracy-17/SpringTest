@@ -9,6 +9,18 @@
     <script src="js/jquery-3.4.1.min.js"></script>
     <script src="js/bootstrap.min.js" type="application/javascript"></script>
 </head>
+<script type="application/javascript">
+    //控制提示后登录的跳转
+    window.onload=function(){
+        //debugger；//相当于debug在这里设置断点
+        let closable = window.localStorage.getItem("closable");
+        if(closable){
+            //登录成功后关掉当前window
+            window.close();
+            window.localStorage.removeItem("closable");
+        }
+    }
+</script>
 <body>
 <!--引入导航栏：-->
 <div th:insert="navigation::nav"></div>

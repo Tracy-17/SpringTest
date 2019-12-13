@@ -1,7 +1,7 @@
 drop database spring_test;
 create database spring_test;
 use spring_test;
-/*用户*/
+/*用户：待修改，还是以id为主键（连接其他登录api后修改）*/
 drop table if exists user;
 create table user
 (
@@ -33,19 +33,27 @@ create table question
 	foreign key(creator) references user(ACCOUNT_ID)
 );
 /*评论*/
+drop table if exists comment;
 create table comment
 (
-	id bigint auto_increment,
-	parent_id bigint not null,
+	id bigint auto_increment
+		primary key,
+	parent_id int not null comment '被评论的帖子的id',
 	type int not null comment '是一级回复or二级回复',
-	commentator varchar(11) not null,
+	commentator int not null comment '评论者id',
 	gmt_create bigint not null,
 	gmt_modified bigint not null,
 	like_count bigint default 0 null,
-	content varchar(255) not null,
-	constraint comment_pk
-		primary key (id)
+	content varchar(255) not null
 );
+/*外键：*/
+alter table comment add constraint fk_reference_2 foreign key(parent_id) references question(id) on delete restrict on update restrict;
+/*外键：失败，不知原因*/
+alter table comment add constraint fk_reference_2 foreign key(commentator) references user(id) on delete restrict on update restrict;
+
+alter table comment modify id int auto_increment;
+
+
 
 
 

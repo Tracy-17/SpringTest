@@ -7,4 +7,5 @@ package spring17.exception;
  */
 public interface ICustomizeErrorCode {
     String getMessage();
+    Integer getCode();
 }

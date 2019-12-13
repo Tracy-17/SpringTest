@@ -36,4 +36,13 @@
     view_count = view_count+#{viewCount,jdbcType=INTEGER}
     where id=#{id}
   </update>
+  <update id="incComment" parameterType="spring17.model.Question" >
+    <!--
+     12.13：更新评论数
+    -->
+    update question
+    set
+    comment_count = comment_count+#{commentCount,jdbcType=INTEGER}
+    where id=#{id}
+  </update>
 </mapper>
