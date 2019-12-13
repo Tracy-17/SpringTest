@@ -54,8 +54,9 @@
         </javaClientGenerator>
         <!--tables映射
         domainObjectName:生成对象的基本名称-->
-        <table tableName="user" domainObjectName="User"/>
-        <table tableName="question" domainObjectName="Question0"/>
+<!--        <table tableName="user" domainObjectName="User"/>-->
+<!--        <table tableName="question" domainObjectName="Question0"/>-->
+        <table tableName="comment" domainObjectName="Comment"/>
         <!--        <table tableName="question" domainObjectName="Question"/>-->
         <!--   enableCountByExample="false" enableUpdateByExample="false"
            enableDeleteByExample="false" enableSelectByExample="false"

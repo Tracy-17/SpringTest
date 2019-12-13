@@ -8,6 +8,7 @@ import spring17.dto.PaginationDTO;
 import spring17.dto.QuestionDTO;
 import spring17.exception.CustomizeErrorCode;
 import spring17.exception.CustomizeException;
+import spring17.mapper.QuestionExtMapper;
 import spring17.mapper.QuestionMapper;
 import spring17.mapper.UserMapper;
 import spring17.model.Question;
@@ -26,6 +27,9 @@ import java.util.List;
 public class QuestionService {
     @Autowired
     private QuestionMapper questionMapper;
+    //为优化多线程操作，自己写的方法
+    @Autowired
+    private QuestionExtMapper questionExtMapper;
     @Autowired
     private UserMapper userMapper;
 
@@ -120,6 +124,7 @@ public class QuestionService {
         if(question.getId()==null){
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreate());
+
             questionMapper.insert(question);
         }else{
             //更新
@@ -140,5 +145,18 @@ public class QuestionService {
                 throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
             }
         }
+    }
+
+    public void incView(Integer id) {
+    /*    Question question = questionMapper.selectByPrimaryKey(id);
+        Question updateQuestion = new Question();
+        //多人同时访问会出问题
+        updateQuestion.setViewCount(question.getViewCount()+1);*/
+
+        Question question = new Question();
+        question.setId(id);
+        //每次递增一个步长
+        question.setViewCount(1);
+        questionExtMapper.incView(question);
     }
 }

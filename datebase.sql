@@ -32,6 +32,22 @@ create table question
 /*外键约束：question creator对应user id,但这里的*/
 	foreign key(creator) references user(ACCOUNT_ID)
 );
+/*评论*/
+create table comment
+(
+	id bigint auto_increment,
+	parent_id bigint not null,
+	type int not null comment '是一级回复or二级回复',
+	commentator varchar(11) not null,
+	gmt_create bigint not null,
+	gmt_modified bigint not null,
+	like_count bigint default 0 null,
+	content varchar(255) not null,
+	constraint comment_pk
+		primary key (id)
+);
+
+
 
 
 

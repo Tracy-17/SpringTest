@@ -16,9 +16,12 @@ https://www.cnblogs.com/deng-cc/p/9340748.html
 
 问题总结&更新日志：
 12.12
-mybatis-generator这里出了很多错，把UserMapper.xml里
+mybatis-generator这里出了很多错，（分页插件的问题）。把UserMapper.xml里
 <select id="selectByExampleWithBLOBsWithRowbounds" parameterType="spring17.model.UserExample" resultMap="ResultMapWithBLOBs">
-删了两行，算是解决了吧。。。
+♥删了两行，算是解决了吧。。。
 ★待修改：利用id修改别人的问题的风险&首页拿不到问题描述
 12.13
 whiteLable的解决，添加通用的处理业务异常逻辑（注意继承RuntimeException，不影响其他代码）
+实现阅读数功能
+♥修改记录：数据库修改（not null default 0）后，不想自动更新xml文件，手动更新：删除insert时阅读、评论、点赞的字段更新。
+多线程优化，自定义incView方法并添加Ext版xml、mapper文件（以防止重新生成时被覆盖）
