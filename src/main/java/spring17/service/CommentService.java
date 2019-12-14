@@ -4,14 +4,11 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import spring17.controller.CommentDTO;
+import spring17.dto.CommentDTO;
 import spring17.enums.CommentTypeEnum;
 import spring17.exception.CustomizeErrorCode;
 import spring17.exception.CustomizeException;
-import spring17.mapper.CommentMapper;
-import spring17.mapper.QuestionExtMapper;
-import spring17.mapper.QuestionMapper;
-import spring17.mapper.UserMapper;
+import spring17.mapper.*;
 import spring17.model.*;
 
 import java.util.ArrayList;
@@ -35,6 +32,8 @@ public class CommentService {
     private QuestionExtMapper questionExtMapper;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private CommentExtMapper commentExtMapper;
 
 //    Transactional:将整个方法体设为同一个事物
     @Transactional
@@ -53,6 +52,11 @@ public class CommentService {
                 throw new CustomizeException(CustomizeErrorCode.COMMENT_NOT_FOUND);
             }
             commentMapper.insert(comment);
+            //增加父评论的评论数
+            Comment parentComment =new Comment();
+            parentComment.setId(comment.getParentId());
+            parentComment.setCommentCount(1);
+            commentExtMapper.incComment(parentComment);
         }else{
             //回复问题
             Question question = questionMapper.selectByPrimaryKey(comment.getParentId());
@@ -65,12 +69,15 @@ public class CommentService {
         }
     }
 
-    public List<CommentDTO> listByQuestionId(Integer id) {
+    public List<CommentDTO> listByTargetId(Integer id, CommentTypeEnum type) {
         CommentExample commentExample = new CommentExample();
         commentExample.createCriteria()
                 .andParentIdEqualTo(id)
                 //为问题回复
-                .andTypeEqualTo(CommentTypeEnum.QUESTION.getType());
+                //ctrl+alt+P：Extracting parameter to listByQuestionId(Integer)抽参数;ctrl+F6修改参数类型
+                .andTypeEqualTo(type.getType());
+        //按时间倒序显示回复：
+        commentExample.setOrderByClause("gmt_create desc");
         List<Comment> comments = commentMapper.selectByExample(commentExample);
         if(comments.size()==0){
             return new ArrayList<>();

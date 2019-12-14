@@ -12,7 +12,8 @@ https://mybatis.org/mybatis-3/configuration.html#settings
 【拦截器】
 https://docs.spring.io/spring/docs/5.0.3.RELEASE/spring-framework-reference/web.html#mvc
 【mybatis-generator】
-可以不用写很多sql语句。命令：mvn mybatis-generator:generate(mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate)
+可以不用写很多sql语句。命令：mvn mybatis-generator:generate
+            (mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate)
 https://www.cnblogs.com/deng-cc/p/9340748.html
 【postman】方便接口验证，用于异常调试（未测试）
 问题总结&更新日志：
@@ -39,3 +40,5 @@ whiteLable的解决，添加通用的处理业务异常逻辑（注意继承Runt
 完成评论框的前端，以及提交时的错误显示
 localStorage-实现跳转登录后，自动关闭登录页返回当前页面（保留文本框信息）
 实装显示评论列表功能（待修改：回复时应显示当前登录用户的信息）
+
+删除like_count（默认为0）

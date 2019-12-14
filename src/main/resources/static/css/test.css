@@ -28,6 +28,9 @@ body{
 .profile-section{
     margin-top: 15px;
 }
+.question-title{
+    margin-top:25px;
+}
 .test-menu{
     display: block;
     margin-bottom: 15px;
@@ -48,6 +51,13 @@ body{
     margin-bottom: 15px;
     border-bottom: 1px solid #eeeeee;
 }
+.sub-comments{
+    border-radius: 5px;
+    margin-top: 10px;
+    border: 1px solid #eeeeee;
+    padding-top: 15px;
+    margin-bottom: 15px;
+}
 .menu{
     color: #999;
     margin-top:5px;
@@ -58,5 +68,15 @@ body{
     cursor: pointer;
 }
 .menu-icon:hover{
+    color:#337ab7;
+}
+.comment-icon{
+    font-size: 15px;
+    cursor: pointer;
+}
+.comment-icon:hover{
+    color:#337ab7;
+}
+.menu-active{
     color:#337ab7;
 }

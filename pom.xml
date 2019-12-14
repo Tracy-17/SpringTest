@@ -82,6 +82,13 @@
                 </exclusion>
             </exclusions>
         </dependency>
+<!--        无需判断!=null||!=""，只需判断StringUtil.isBlank()-->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.9</version>
+        </dependency>
+
     </dependencies>
 
     <build>

@@ -52,7 +52,8 @@ alter table comment add constraint fk_reference_2 foreign key(parent_id) referen
 alter table comment add constraint fk_reference_2 foreign key(commentator) references user(id) on delete restrict on update restrict;
 
 alter table comment modify id int auto_increment;
-
+alter table comment
+	add comment_count int default 0 null comment '二级评论数';
 
 
 

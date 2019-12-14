@@ -1,4 +1,4 @@
-package spring17.controller;
+package spring17.dto;
 
 import lombok.Data;
 import spring17.model.User;
@@ -19,4 +19,5 @@ public class CommentDTO {
     private String content;
     //新增：
     private User user;
+    private Integer commentCount;
 }

@@ -1,19 +1,20 @@
 package spring17.controller;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import spring17.dto.CommentCreateDTO;
+import spring17.dto.CommentDTO;
 import spring17.dto.ResultDTO;
+import spring17.enums.CommentTypeEnum;
 import spring17.exception.CustomizeErrorCode;
 import spring17.model.Comment;
 import spring17.model.User;
 import spring17.service.CommentService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * Author:ShiQi
@@ -36,6 +37,9 @@ public class CommentController {
         if(user==null){
             return ResultDTO.errorOf(CustomizeErrorCode.NO_LOGIN);
         }
+        if(commentCreateDTO==null|| StringUtils.isBlank(commentCreateDTO.getContent())){
+            return ResultDTO.errorOf(CustomizeErrorCode.CONTENT_IS_EMPTY);
+        }
 
         Comment comment = new Comment();
 
@@ -50,5 +54,12 @@ public class CommentController {
         commentService.insert(comment);
 
         return ResultDTO.okOf();
+    }
+
+    @ResponseBody
+    @RequestMapping(value="/comment/{id}",method = RequestMethod.GET)
+    public ResultDTO<List<CommentDTO>> comments(@PathVariable(name="id")Integer id){
+        List<CommentDTO> commentDTOS = commentService.listByTargetId(id, CommentTypeEnum.COMMENT);
+        return ResultDTO.okOf(commentDTOS);
     }
 }
