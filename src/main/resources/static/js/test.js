@@ -119,3 +119,20 @@ function collapseComments(e) {
         }
     }
 }
+//标签
+function showSelectTag() {
+    $("#select-tag").show();
+
+}
+function selectTag(e){
+    let value=e.getAttribute("data-tag");
+    let previous = $("#tag").val();
+    //有这个标签就无法添加
+    if (previous.indexOf(value) == -1) {
+        if (previous) {
+            $("#tag").val(previous + '，' + value);
+        } else {
+            $("#tag").val(value);
+        }
+    }
+}

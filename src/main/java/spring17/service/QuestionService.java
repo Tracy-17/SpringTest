@@ -1,8 +1,10 @@
 package spring17.service;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.BeanUtils;//spring的性能较好
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import spring17.dto.PaginationDTO;
 import spring17.dto.QuestionDTO;
@@ -14,9 +16,12 @@ import spring17.mapper.UserMapper;
 import spring17.model.Question;
 import spring17.model.QuestionExample;
 import spring17.model.User;
+import sun.swing.StringUIClientPropertyKey;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Author:ShiQi
@@ -36,7 +41,9 @@ public class QuestionService {
     //展示在首页的问题列表
     public PaginationDTO List(Integer page, Integer size) {
         PaginationDTO paginationDTO = new PaginationDTO();
-        Integer totalCount = questionMapper.countByExample(new QuestionExample());
+        QuestionExample questionExample = new QuestionExample();
+        questionExample.setOrderByClause("gmt_create desc");
+        Integer totalCount = questionMapper.countByExample(questionExample);
         paginationDTO.setPagination(totalCount,page,size);
 
         //容错处理
@@ -158,5 +165,26 @@ public class QuestionService {
         //每次递增一个步长
         question.setViewCount(1);
         questionExtMapper.incView(question);
+    }
+
+    public List<QuestionDTO> selectRelated(QuestionDTO queryDTO) {
+        if(StringUtils.isBlank(queryDTO.getTag())){
+            return new ArrayList<>();
+        }
+        String[] tags = StringUtils.split(queryDTO.getTag(), "[,\\，]");
+        //???
+        String regexpTag = Arrays.stream(tags).collect(Collectors.joining("|"));
+        Question question = new Question();
+        question.setId(queryDTO.getId());
+        question.setTag(regexpTag);
+
+        List<Question> questions = questionExtMapper.selectRelated(question);
+        List<QuestionDTO> questionDTOS = questions.stream().map(q -> {
+            QuestionDTO questionDTO = new QuestionDTO();
+            BeanUtils.copyProperties(q,questionDTO);
+            return questionDTO;
+        }).collect(Collectors.toList());
+
+        return questionDTOS;
     }
 }

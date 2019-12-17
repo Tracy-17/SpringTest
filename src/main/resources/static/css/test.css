@@ -31,8 +31,34 @@ body{
 .question-title{
     margin-top:25px;
 }
+.question-tag{
+    margin-right: 5px;
+}
+.tag-tab{
+    display: none;
+    margin-top:10px;
+}
+.tag-info{
+    margin:10px 10px;
+    white-space: normal;
+    display:inline-block;
+}
+.tag-text{
+    font-size: 14px;
+    padding-top: 2px;
+    padding-bottom: 3px;
+}
+.question-tag-text{
+    font-size: 11px;
+}
+.question-related{
+    line-height: 20px;
+    font-size: 14px;
+    margin-left: 0;
+    list-style: none;
+    padding-left: 0;
+}
 .test-menu{
-    display: block;
     margin-bottom: 15px;
     color:#999;
     font-size: 13px;
@@ -79,4 +105,7 @@ body{
 }
 .menu-active{
     color:#337ab7;
+}
+.qq{
+    width:50%;
 }
