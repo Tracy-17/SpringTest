@@ -29,7 +29,7 @@ public class PublishController {
     private QuestionService questionService;
 
     @GetMapping("/publish/{id}")
-    public String edit(@PathVariable(name="id")Integer id,
+    public String edit(@PathVariable(name="id")Long id,
                        Model model){
         QuestionDTO question = questionService.getById(id);
         model.addAttribute("title", question.getTitle());
@@ -52,7 +52,7 @@ public class PublishController {
             @RequestParam(value ="title",required = false) String title,
             @RequestParam(value ="description",required = false) String description,
             @RequestParam(value ="tag",required = false) String tag,
-            @RequestParam(value = "id",required = false)Integer id,
+            @RequestParam(value = "id",required = false)Long id,
             HttpServletRequest request,
             //model可以把数据推送到前端页面
             Model model) {
@@ -87,15 +87,15 @@ public class PublishController {
             model.addAttribute("error", "用户未登录");
             return "/publish";
         }
-        //评论数据进库
+        //提问数据进库
         Question question = new Question();
         question.setTitle(title);
         question.setDescription(description);
         question.setTag(tag);
         question.setId(id);
 
-//        question.setCreator(user.getId());//拿到的是登录的id（待改善）
-        question.setCreator(user.getAccountId());
+
+        question.setCreator(user.getId());
 
         //存在风险：非法修改
         questionService.createOrUpdate(question);

@@ -74,13 +74,13 @@ public class QuestionService {
     }
 
     //展示在个人页的问题列表
-    public PaginationDTO list(String userAccountId, Integer page, Integer size) {
+    public PaginationDTO list(Long userId, Integer page, Integer size) {
 
         PaginationDTO paginationDTO = new PaginationDTO();
 
         QuestionExample questionExample = new QuestionExample();
         questionExample.createCriteria()
-                .andCreatorEqualTo(userAccountId);
+                .andCreatorEqualTo(userId);
         Integer totalCount = questionMapper.countByExample(questionExample);
         paginationDTO.setPagination(totalCount,page,size);
 
@@ -97,7 +97,7 @@ public class QuestionService {
 
         QuestionExample example = new QuestionExample();
         example.createCriteria()
-                .andCreatorEqualTo(userAccountId);
+                .andCreatorEqualTo(userId);
         List<Question> questions = questionMapper.selectByExampleWithRowbounds(example,new RowBounds(offset,size));
         List<QuestionDTO> questionDTOS = new ArrayList<>();
         for (Question question : questions) {
@@ -113,7 +113,7 @@ public class QuestionService {
         return paginationDTO;
     }
 
-    public QuestionDTO getById(Integer id) {
+    public QuestionDTO getById(Long id) {
         Question question=questionMapper.selectByPrimaryKey(id);
         //异常处理
         if(question==null){
@@ -129,8 +129,12 @@ public class QuestionService {
 
     public void createOrUpdate(Question question) {
         if(question.getId()==null){
+            //创建提问
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreate());
+            question.setViewCount(0);
+            question.setCommentCount(0);
+            question.setLikeCount(0);
 
             questionMapper.insert(question);
         }else{
@@ -154,7 +158,7 @@ public class QuestionService {
         }
     }
 
-    public void incView(Integer id) {
+    public void incView(Long id) {
     /*    Question question = questionMapper.selectByPrimaryKey(id);
         Question updateQuestion = new Question();
         //多人同时访问会出问题

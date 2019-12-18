@@ -55,9 +55,9 @@
         <!--tables映射
         domainObjectName:生成对象的基本名称-->
 <!--        <table tableName="user" domainObjectName="User"/>-->
-<!--        <table tableName="question" domainObjectName="Question0"/>-->
-        <table tableName="comment" domainObjectName="Comment"/>
-        <!--        <table tableName="question" domainObjectName="Question"/>-->
+<!--        <table tableName="question" domainObjectName="Question"/>-->
+<!--        <table tableName="comment" domainObjectName="Comment"/>-->
+        <table tableName="notification" domainObjectName="Notification"/>
         <!--   enableCountByExample="false" enableUpdateByExample="false"
            enableDeleteByExample="false" enableSelectByExample="false"
            selectByExampleQueryId="false">-->

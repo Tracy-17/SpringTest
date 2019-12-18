@@ -24,9 +24,6 @@ public class UserService {
         long nowTime = System.currentTimeMillis();
         if(users.size()==0){
             //插入
-            //当前用户总数：
-            Integer userNum=userMapper.countByExample(new UserExample());
-            user.setId(userNum+1);//手动自增（勉为其难.jpg）
             //注册时间
             user.setGmtCreate(nowTime);
             user.setGmtModified(nowTime);
