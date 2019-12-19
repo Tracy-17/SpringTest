@@ -119,19 +119,17 @@
                     提交回复
                 </h4>
                 <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12 comment-sp">
-                <!--            点击回复后，为防止短时间内多次回复，暂时不显示评论框-->
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="comment_section">
                     <div class="media">
                         <div class="media-left">
                             <a href="#">
                                 <img class="media-object img-rounded"
-                                     th:if="${question.user.avatarUrl!=null}"
-                                     th:src="@{${question.user.avatarUrl}}">
+                                     th:src="@{${session.user!=null?session.user.avatarUrl:'/images/default-avatar.png'}}">
                             </a>
                         </div>
                         <div class="media-body">
                             <h6 class="media-heading">
-                                <span th:text="${question.user.name}"></span>
+                                <span th:text="${session.user!=null?session.user.name:'你还没登录哦'}"></span>
                             </h6>
                         </div>
                     </div>
@@ -149,8 +147,7 @@
                     <div class="media-left">
                         <a href="#">
                             <img class="media-object img-rounded"
-                                 th:if="${question.user.avatarUrl!=null}"
-                                 th:src="@{${question.user.avatarUrl}}">
+                                 th:if="${question.user.avatarUrl!=null}" th:src="@{${question.user.avatarUrl}}">
                         </a>
                     </div>
                     <div class="media-body">
@@ -178,5 +175,6 @@
         </div>
     </div>
 </div>
+<div th:insert="~{footer::foot}"></div>
 </body>
 </html>

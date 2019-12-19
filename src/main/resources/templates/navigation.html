@@ -20,9 +20,9 @@
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <form class="navbar-form navbar-left">
+            <form class="navbar-form navbar-left" action="/index" method="get">
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="默认文字">
+                    <input type="text" class="form-control" name="search" placeholder="搜索你感兴趣的">
                 </div>
                 <button type="submit" class="btn btn-default">搜索</button>
             </form>
@@ -39,9 +39,9 @@
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">个人资料</a></li>
+<!--                        <li><a href="#">个人资料</a></li>-->
                         <li><a href="/profile/questions">我的问题</a></li>
-                        <li><a href="#">ＰＹ交易</a></li>
+                        <li><a href="/images/qq.png">ＰＹ交易</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="/logout">退出登录</a></li>
                     </ul>

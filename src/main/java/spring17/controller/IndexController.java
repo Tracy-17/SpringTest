@@ -22,14 +22,16 @@ public class IndexController {
 
     @GetMapping("/index")
     //这里只写/ 火狐测试ok，chrome需要在所有地方补全/index
-    public String index(HttpServletRequest request,
-                        Model model,
+    public String index(Model model,
                         @RequestParam(name="page",defaultValue = "1")Integer page,
-                        @RequestParam(name="size",defaultValue = "5")Integer size) {
+                        @RequestParam(name="size",defaultValue = "5")Integer size,
+                        @RequestParam(name="search",required = false)String search
+    ) {
 
         //获取question数据
-        PaginationDTO pagination=questionService.List(page,size);
+        PaginationDTO pagination=questionService.list(search,page,size);
         model.addAttribute("pagination",pagination);
+        model.addAttribute("search",search);
         return "index";
     }
 }

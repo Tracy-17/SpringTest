@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import spring17.dto.PaginationDTO;
 import spring17.dto.QuestionDTO;
+import spring17.dto.QuestionQueryDTO;
 import spring17.exception.CustomizeErrorCode;
 import spring17.exception.CustomizeException;
 import spring17.mapper.QuestionExtMapper;
@@ -37,10 +38,21 @@ public class QuestionService {
     private UserMapper userMapper;
 
     //展示在首页的问题列表
-    public PaginationDTO List(Integer page, Integer size) {
+    public PaginationDTO list(String search, Integer page, Integer size) {
+        //查找：
+        if (StringUtils.isNotBlank(search)) {
+            String[] tags = StringUtils.split(search, " ");
+            //按空格拆分，拼上|，传递至数据库查找
+            search= Arrays.stream(tags).collect(Collectors.joining("|"));
+
+        }
+
         PaginationDTO paginationDTO = new PaginationDTO();
         Integer totalPage;
-        Integer totalCount = questionMapper.countByExample(new QuestionExample());
+
+        QuestionQueryDTO questionQueryDTO = new QuestionQueryDTO();
+        questionQueryDTO.setSearch(search);
+        Integer totalCount = questionExtMapper.countBySearch(questionQueryDTO);
 
         if (totalCount % size == 0) {
             totalPage = totalCount / size;
@@ -57,12 +69,20 @@ public class QuestionService {
         paginationDTO.setPagination(totalPage, page);
 
         //size*(page-1)
-        Integer offset = size * (page - 1);
+        Integer offset;
+        if(page==0){
+            offset=0;
+        }else{
+            offset = size * (page - 1);
+        }
 
-        QuestionExample questionExample = new QuestionExample();
+        /*QuestionExample questionExample = new QuestionExample();
         //首页倒序显示：
-        questionExample.setOrderByClause("gmt_create desc");
-        List<Question> questions = questionMapper.selectByExampleWithRowbounds(questionExample, new RowBounds(offset, size));
+        questionExample.setOrderByClause("gmt_create desc");*/
+
+        questionQueryDTO.setSize(size);
+        questionQueryDTO.setPage(offset);
+        List<Question> questions = questionExtMapper.selectBySearch(questionQueryDTO);
 
         List<QuestionDTO> questionDTOS = new ArrayList<>();
         for (Question question : questions) {

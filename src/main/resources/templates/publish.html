@@ -46,6 +46,10 @@
                             delay: 0,
                             watch:false,        //实时预览
                             placeholder:"请输入问题描述",
+                            emoji:true,
+                            imageUpload    : true,
+                            imageFormats   : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+                            imageUploadURL : "/file/upload"
                         });
                     });
                 </script>
@@ -92,15 +96,16 @@
             </form>
         </div>
         <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
-            <h3>托亚</h3>
+            <h3>提问说明</h3>
             ==================================<br>
-            （总觉得至今都没有实感。）<br>
-            「少开玩笑。我可没兴趣老老实实被抓。」<br>
-            （怎么可能原谅？）<br>
-            【SAVE1 全角色共通】<br>
-            「不必了。」<br>
+            这里的内容<br>
+            还没有进行<br>
+            任何设计<br>
+            在做了、<br>
+            在做了。<br>
         </div>
     </div>
 </div>
+<div th:insert="~{footer::foot}"></div>
 </body>
 </html>

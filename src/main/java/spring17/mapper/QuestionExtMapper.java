@@ -3,6 +3,7 @@ package spring17.mapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
+import spring17.dto.QuestionQueryDTO;
 import spring17.model.Question;
 import spring17.model.QuestionExample;
 
@@ -17,4 +18,8 @@ public interface QuestionExtMapper {
     int incView(Question record);
     int incComment(Question record);
     List<Question> selectRelated(Question question);
+
+    Integer countBySearch(QuestionQueryDTO questionQueryDTO);
+
+    List<Question> selectBySearch(QuestionQueryDTO questionQueryDTO);
 }

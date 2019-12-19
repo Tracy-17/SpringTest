@@ -1,5 +1,6 @@
 package spring17.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -19,8 +20,10 @@ import java.util.UUID;
 /**
  * Author:ShiQi
  * Date:2019/12/6-23:22
+ * Slf4j:lombok的注解，生成日志文件
  */
 @Controller
+@Slf4j
 public class AuthorizeController {
     //将实例自动加载入上下文
     @Autowired
@@ -69,6 +72,8 @@ public class AuthorizeController {
             //有redirect前缀，会把地址栏刷新重定向到index
             return "redirect:/index";
         } else {
+            //日志文件：{}：将后面的内容打印到前面
+            log.error("callback get github error,{}",githubUser);
             //登录失败，重新登录
             return "redirect:/index";
         }
