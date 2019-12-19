@@ -12,8 +12,10 @@ import java.util.List;
  * 待学习：pageHelper
  */
 @Data
-public class PaginationDTO {
-    private List<QuestionDTO> questionDTOS;
+public class PaginationDTO<T> {
+    //12.19更新：适配展示任何类型
+    private List<T> data;
+//    private List<QuestionDTO> questionDTOS;
     //是否有向前按钮
     private boolean showPrevious;
     private boolean showFirstPage;
@@ -26,22 +28,10 @@ public class PaginationDTO {
 
     private Integer totalPage;
 
-    public void setPagination(Integer totalCount, Integer page, Integer size) {
-        if (totalCount % size == 0) {
-            totalPage = totalCount / size;
-        } else {
-            totalPage = totalCount / size + 1;
-        }
-
-        //容错处理
-        if(page<1){
-            page=1;
-        }
-        if(page>totalPage){
-            page=totalPage;
-        }
+    public void setPagination(Integer totalPage, Integer page) {
         //改变当前属性
         this.page=page;
+        this.totalPage=totalPage;
 
         //显示当前页面
         pages.add(page);

@@ -41,7 +41,7 @@ public class CommentService {
 
 //    Transactional:将整个方法体设为同一个事物
     @Transactional
-    public void insert(Comment comment) {
+    public void insert(Comment comment, User commentator) {
         if(comment.getParentId()==null||comment.getParentId()==0){
             throw new CustomizeException(CustomizeErrorCode.TARGET_PARAM_NOT_FOUND);
         }
@@ -55,6 +55,11 @@ public class CommentService {
             if(dbComment==null){
                 throw new CustomizeException(CustomizeErrorCode.COMMENT_NOT_FOUND);
             }
+            //查询当前问题题目
+            Question question = questionMapper.selectByPrimaryKey(dbComment.getParentId());
+            if(question==null){
+                throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+            }
             commentMapper.insert(comment);
             //增加父评论的评论数
             Comment parentComment =new Comment();
@@ -62,7 +67,7 @@ public class CommentService {
             parentComment.setCommentCount(1);
             commentExtMapper.incComment(parentComment);
             //创建通知
-            createNotify(comment, dbComment.getCommentator(), NotificationTypeEnum.REPLY_COMMENT);
+            createNotify(comment, dbComment.getCommentator(), commentator.getName(), question.getTitle(), NotificationTypeEnum.REPLY_COMMENT, question.getId());
         }else{
             //回复问题
             Question question = questionMapper.selectByPrimaryKey(comment.getParentId());
@@ -73,20 +78,23 @@ public class CommentService {
             question.setCommentCount(1);
             questionExtMapper.incComment(question);
             //创建通知
-            createNotify(comment,question.getCreator(), NotificationTypeEnum.REPLY_QUESTION);
+            createNotify(comment,question.getCreator(), commentator.getName(),question.getTitle(),NotificationTypeEnum.REPLY_QUESTION, question.getId());
         }
     }
 
-    private void createNotify(Comment comment, Long receiver, NotificationTypeEnum notificationType) {
+    private void createNotify(Comment comment, Long receiver, String notifierName, String outerTitle, NotificationTypeEnum notificationType, Long outerId) {
         Notification notification = new Notification();
         notification.setGmtCreate(System.currentTimeMillis());
         notification.setType(notificationType.getType());
-        notification.setType(NotificationStatusEnum.UNREAD.getStatus());
-        notification.setOuterid(comment.getParentId());
+        notification.setStatus(NotificationStatusEnum.UNREAD.getStatus());
+
+        notification.setOuterId(outerId);
         notification.setNotifier(comment.getCommentator());
         notification.setReceiver(receiver);
         //状态：0：未读，1：已读
         notification.setStatus(0);
+        notification.setNotifierName(notifierName);
+        notification.setOuterTitle(outerTitle);
         notificationMapper.insert(notification);
     }
 

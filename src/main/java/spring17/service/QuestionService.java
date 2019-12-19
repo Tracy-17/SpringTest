@@ -4,7 +4,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.BeanUtils;//spring的性能较好
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import spring17.dto.PaginationDTO;
 import spring17.dto.QuestionDTO;
@@ -16,7 +15,6 @@ import spring17.mapper.UserMapper;
 import spring17.model.Question;
 import spring17.model.QuestionExample;
 import spring17.model.User;
-import sun.swing.StringUIClientPropertyKey;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,23 +39,30 @@ public class QuestionService {
     //展示在首页的问题列表
     public PaginationDTO List(Integer page, Integer size) {
         PaginationDTO paginationDTO = new PaginationDTO();
-        QuestionExample questionExample = new QuestionExample();
-        questionExample.setOrderByClause("gmt_create desc");
-        Integer totalCount = questionMapper.countByExample(questionExample);
-        paginationDTO.setPagination(totalCount,page,size);
+        Integer totalPage;
+        Integer totalCount = questionMapper.countByExample(new QuestionExample());
 
+        if (totalCount % size == 0) {
+            totalPage = totalCount / size;
+        } else {
+            totalPage = totalCount / size + 1;
+        }
         //容错处理
-        if(page<1){
-            page=1;
+        if (page < 1) {
+            page = 1;
         }
-        if(page>paginationDTO.getTotalPage()){
-            page=paginationDTO.getTotalPage();
+        if (page > totalPage) {
+            page = totalPage;
         }
+        paginationDTO.setPagination(totalPage, page);
 
         //size*(page-1)
         Integer offset = size * (page - 1);
 
-        List<Question> questions = questionMapper.selectByExampleWithRowbounds(new QuestionExample(),new RowBounds(offset,size));
+        QuestionExample questionExample = new QuestionExample();
+        //首页倒序显示：
+        questionExample.setOrderByClause("gmt_create desc");
+        List<Question> questions = questionMapper.selectByExampleWithRowbounds(questionExample, new RowBounds(offset, size));
 
         List<QuestionDTO> questionDTOS = new ArrayList<>();
         for (Question question : questions) {
@@ -68,7 +73,7 @@ public class QuestionService {
             questionDTO.setUser(user);
             questionDTOS.add(questionDTO);
         }
-        paginationDTO.setQuestionDTOS(questionDTOS);
+        paginationDTO.setData(questionDTOS);
 
         return paginationDTO;
     }
@@ -77,20 +82,25 @@ public class QuestionService {
     public PaginationDTO list(Long userId, Integer page, Integer size) {
 
         PaginationDTO paginationDTO = new PaginationDTO();
-
+        Integer totalPage;
         QuestionExample questionExample = new QuestionExample();
         questionExample.createCriteria()
                 .andCreatorEqualTo(userId);
         Integer totalCount = questionMapper.countByExample(questionExample);
-        paginationDTO.setPagination(totalCount,page,size);
 
+        if (totalCount % size == 0) {
+            totalPage = totalCount / size;
+        } else {
+            totalPage = totalCount / size + 1;
+        }
         //容错处理
-        if(page<1){
-            page=1;
+        if (page < 1) {
+            page = 1;
         }
-        if(page>paginationDTO.getTotalPage()){
-            page=paginationDTO.getTotalPage();
+        if (page > totalPage) {
+            page = totalPage;
         }
+        paginationDTO.setPagination(totalPage,page);
 
         //size*(page-1)
         Integer offset = size * (page - 1);
@@ -98,7 +108,7 @@ public class QuestionService {
         QuestionExample example = new QuestionExample();
         example.createCriteria()
                 .andCreatorEqualTo(userId);
-        List<Question> questions = questionMapper.selectByExampleWithRowbounds(example,new RowBounds(offset,size));
+        List<Question> questions = questionMapper.selectByExampleWithRowbounds(example, new RowBounds(offset, size));
         List<QuestionDTO> questionDTOS = new ArrayList<>();
         for (Question question : questions) {
             User user = userMapper.selectByPrimaryKey(question.getCreator());
@@ -108,27 +118,27 @@ public class QuestionService {
             questionDTO.setUser(user);
             questionDTOS.add(questionDTO);
         }
-        paginationDTO.setQuestionDTOS(questionDTOS);
+        paginationDTO.setData(questionDTOS);
 
         return paginationDTO;
     }
 
     public QuestionDTO getById(Long id) {
-        Question question=questionMapper.selectByPrimaryKey(id);
+        Question question = questionMapper.selectByPrimaryKey(id);
         //异常处理
-        if(question==null){
+        if (question == null) {
             throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
         }
-        QuestionDTO questionDTO=new QuestionDTO();
-        BeanUtils.copyProperties(question,questionDTO);
+        QuestionDTO questionDTO = new QuestionDTO();
+        BeanUtils.copyProperties(question, questionDTO);
         //获取user对象
-        User user=userMapper.selectByPrimaryKey(question.getCreator());
+        User user = userMapper.selectByPrimaryKey(question.getCreator());
         questionDTO.setUser(user);
         return questionDTO;
     }
 
     public void createOrUpdate(Question question) {
-        if(question.getId()==null){
+        if (question.getId() == null) {
             //创建提问
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreate());
@@ -137,7 +147,7 @@ public class QuestionService {
             question.setLikeCount(0);
 
             questionMapper.insert(question);
-        }else{
+        } else {
             //更新
             question.setGmtModified(System.currentTimeMillis());
             Question updateQuestion = new Question();
@@ -152,7 +162,7 @@ public class QuestionService {
                     .andIdEqualTo(question.getId());
             int updated = questionMapper.updateByExampleSelective(updateQuestion, example);
             //异常处理
-            if(updated!=1){
+            if (updated != 1) {
                 throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
             }
         }
@@ -172,7 +182,7 @@ public class QuestionService {
     }
 
     public List<QuestionDTO> selectRelated(QuestionDTO queryDTO) {
-        if(StringUtils.isBlank(queryDTO.getTag())){
+        if (StringUtils.isBlank(queryDTO.getTag())) {
             return new ArrayList<>();
         }
         String[] tags = StringUtils.split(queryDTO.getTag(), "[,\\，]");
@@ -185,7 +195,7 @@ public class QuestionService {
         List<Question> questions = questionExtMapper.selectRelated(question);
         List<QuestionDTO> questionDTOS = questions.stream().map(q -> {
             QuestionDTO questionDTO = new QuestionDTO();
-            BeanUtils.copyProperties(q,questionDTO);
+            BeanUtils.copyProperties(q, questionDTO);
             return questionDTO;
         }).collect(Collectors.toList());
 

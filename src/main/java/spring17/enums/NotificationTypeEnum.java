@@ -10,16 +10,23 @@ public enum NotificationTypeEnum {
     private int type;
     private String name;
 
-    public int getType() {
-        return type;
-    }
+    public int getType() { return type; }
 
     public String getName() {
         return name;
     }
 
-    NotificationTypeEnum(int type, String name) {
-        this.type = type;
+    NotificationTypeEnum(int status, String name) {
+        this.type = status;
         this.name = name;
+    }
+    //根据type返回其类型？
+    public static String nameOfType(int type){
+        for (NotificationTypeEnum notificationTypeEnum : NotificationTypeEnum.values()) {
+            if(notificationTypeEnum.getType()==type){
+                return notificationTypeEnum.getName();
+            }
+        }
+        return "";
     }
 }

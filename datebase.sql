@@ -51,19 +51,19 @@ create table comment
 /*外键：评论者---用户ID*/
 alter table comment add constraint fk_reference_2 foreign key(commentator) references user(id) on delete restrict on update restrict;
 
-
 /*通知*/
+drop table if exists notification;
 create table notification
 (
-	id bigint auto_increment,
+	id bigint auto_increment primary key,
 	notifier bigint not null comment '通知者',
+	notifier_name varchar(100) null comment '缓存题目，以便减少查询次数，提高效率',
 	receiver bigint not null comment '接收者',
-	outerId bigint not null comment '回复的问题/评论的ID',
+	outer_id bigint not null comment '回复的问题/评论的ID',
+	outer_title varchar(50) null,
 	type int not null comment '回复的是评论或问题',
-	gmt_create bigint null,
 	status int default 0 null comment '状态：0：未读，1：已读',
-	constraint notification_pk
-		primary key (id)
+	gmt_create bigint null
 );
 /*外键：创建者---用户，失败不知原因。。。
 alter table notification add constraint fk_reference_2 foreign key(notifier) references user(id) on delete restrict on update restrict;*/

@@ -15,14 +15,15 @@ https://docs.spring.io/spring/docs/5.0.3.RELEASE/spring-framework-reference/web.
 可以不用写很多sql语句。命令：mvn mybatis-generator:generate
             (mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate)
 https://www.cnblogs.com/deng-cc/p/9340748.html
-【postman】方便接口验证，用于异常调试（未测试）
+【postman】
+方便接口验证，用于异常调试（未测试）
+
 问题总结&更新日志：
 12.12
 mybatis-generator这里出了很多错，（分页插件的问题）。把UserMapper.xml里
 <select id="selectByExampleWithBLOBsWithRowbounds" parameterType="spring17.model.UserExample" resultMap="ResultMapWithBLOBs">
 ♥删了两行，算是解决了吧。。。
 ★待修改：利用id修改别人的问题的风险&首页拿不到问题描述
-
 12.13
 whiteLable的解决，添加通用的处理业务异常逻辑（注意继承RuntimeException，不影响其他代码）
 实现阅读数功能
@@ -34,7 +35,6 @@ whiteLable的解决，添加通用的处理业务异常逻辑（注意继承Runt
 实现多种情况下的异常处理
  事 务 @Transactional：插入评论时，评论入库&问题的评论数+1两操作一起成功、一起失败
 （网络延迟导致，真正的项目中应该为辅助事务（评论数+1）添加补偿机制）
-
 12.14
 用jquery获取hidden的值，实现异步更新；
 完成评论框的前端，以及提交时的错误显示
@@ -45,3 +45,5 @@ localStorage-实现跳转登录后，自动关闭登录页返回当前页面（�
 12.17
 实装点击标签添加功能；建立标签库（待完善）；设置只能选择已有标签（待完善）；
 实装标签关联功能及前端页面调整
+12.19
+全面更新数据库，ID全部设置为bigint类型，并以id作为外键各表相连
