@@ -17,6 +17,8 @@ https://docs.spring.io/spring/docs/5.0.3.RELEASE/spring-framework-reference/web.
 https://www.cnblogs.com/deng-cc/p/9340748.html
 【postman】
 方便接口验证，用于异常调试（未测试）
+【富文本编辑器】
+https://pandao.github.io/editor.md/
 
 问题总结&更新日志：
 12.12
@@ -47,3 +49,5 @@ localStorage-实现跳转登录后，自动关闭登录页返回当前页面（�
 实装标签关联功能及前端页面调整
 12.19
 全面更新数据库，ID全部设置为bigint类型，并以id作为外键各表相连
+实装通知功能；首页倒序；通知倒序；添加未读标识
+实装富文本编辑，增加markdown语法
