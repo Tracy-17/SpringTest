@@ -5,13 +5,13 @@ use spring_test;
 drop table if exists user;
 create table user
 (
-	ID bigint auto_increment
+	id bigint auto_increment
 		primary key,
-	ACCOUNT_ID varchar(100),
-	NAME varchar(50) null,
-	TOKEN varchar(36) null,
-	GMT_CREATE bigint null,
-	GMT_MODIFIED bigint null,
+	account_id varchar(100),
+	name varchar(50) null,
+	token varchar(36) null,
+	gmt_create bigint null,
+	gmt_modified bigint null,
 	bio varchar(256) null,
 	avatar_url varchar(255) null
 );

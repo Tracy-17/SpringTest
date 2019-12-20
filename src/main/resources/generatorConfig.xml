@@ -6,7 +6,7 @@
     <!--    <classPathEntry location="D:\apache-maven-3.6.3\my_jar\mysql\mysql-connector-java\8.0.17\mysql-connector-java-8.0.17.jar"/>-->
     <context id="DB2Tables" targetRuntime="MyBatis3">
         <!--        分页：（有了这个以后，userMapper混乱了。。。）-->
-        <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"/>
+<!--        <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"/>-->
         <!--&lt;!&ndash;创建Java类时是否取消生成注释&ndash;&gt;
                 <commentGenerator>
                 <property name="suppressDate" value="true"/>
@@ -54,10 +54,10 @@
         </javaClientGenerator>
         <!--tables映射
         domainObjectName:生成对象的基本名称-->
-<!--        <table tableName="user" domainObjectName="User"/>-->
+        <table tableName="user" domainObjectName="User"/>
 <!--        <table tableName="question" domainObjectName="Question"/>-->
 <!--        <table tableName="comment" domainObjectName="Comment"/>-->
-        <table tableName="notification" domainObjectName="Notification"/>
+<!--        <table tableName="notification" domainObjectName="Notification"/>-->
         <!--   enableCountByExample="false" enableUpdateByExample="false"
            enableDeleteByExample="false" enableSelectByExample="false"
            selectByExampleQueryId="false">-->

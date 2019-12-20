@@ -57,3 +57,8 @@ localStorage-实现跳转登录后，自动关闭登录页返回当前页面（�
 实装搜索功能：根据标题匹配搜索关键字
 添加页尾信息
 添加日志文件
+❤部署：
+依赖：Git-JDK-Maven-Mysql
+步骤：java -jar xxx.war
+修改数据库全程小写后，jar包运行成功！
+部署网址：http://2b67w71151.wicp.vip/index
